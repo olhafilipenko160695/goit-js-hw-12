@@ -54,8 +54,7 @@ function checkData(data) {
     loadButton.style.display = 'none';
     iziToast.warning({
       title: 'Caution',
-      message:
-        'Sorry, there are no images matching your search query. Please try again!',
+      message: "We're sorry, but you've reached the end of search results.",
     });
   } else {
     handleSearchResults(data.hits);
@@ -75,8 +74,7 @@ function checkData(data) {
     loadButton.style.display = 'none';
     iziToast.warning({
       title: 'Caution',
-      message:
-        'Sorry, there are no images matching your search query. Please try again!',
+      message: "We're sorry, but you've reached the end of search results.",
     });
   }
 }
@@ -93,7 +91,6 @@ async function handleSearch(event) {
   }
   loader.style.display = 'block';
 
-  //додати try catch
   try {
     const data = await performSearch(searchTerm);
     checkData(data);
@@ -106,8 +103,12 @@ async function handleSearch(event) {
 
 async function onLoadButton() {
   page += 1;
-  const data = await performSearch(searchTerm);
-  checkData(data);
+  try {
+    const data = await performSearch(searchTerm);
+    checkData(data);
+  } catch (error) {
+    handleError(error);
+  }
 }
 
 function handleSearchResults(images) {
