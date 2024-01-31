@@ -73,9 +73,10 @@ function checkData(data) {
     loadButton.style.display = 'block';
   } else {
     loadButton.style.display = 'none';
-    iziToast.error({
-      title: 'Error',
-      message: "We're sorry, but you've reached the end of search results.",
+    iziToast.warning({
+      title: 'Caution',
+      message:
+        'Sorry, there are no images matching your search query. Please try again!',
     });
   }
 }
@@ -91,8 +92,15 @@ async function handleSearch(event) {
     return;
   }
   loader.style.display = 'block';
-  const data = await performSearch(searchTerm);
-  checkData(data);
+
+  //додати try catch
+  try {
+    const data = await performSearch(searchTerm);
+    checkData(data);
+  } catch (error) {
+    handleError(error);
+  }
+
   searchForm.reset();
 }
 
